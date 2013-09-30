@@ -10,41 +10,42 @@
 
 module.exports = function(grunt) {
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
+  grunt.registerTask('kuma-generate', 'Easily create new SCSS modules within a Kunstmaan project.', function(type, name) {
+    var fs = require('fs'),
+        colors = require('colors'),
+        done = this.async(),
+        cwd = process.cwd(),
+        config;
 
-  grunt.registerMultiTask('kunstmaan_generate', 'Easily create new SCSS modules within a Kunstmaan project.', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
-    });
-
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
+    config = {
+      'basePath': '/scss/',
+      'generalPath': '/scss',
+      'componentsPath': '/scss/components/'
+    }
+    var createComponent = function(name, done) {
+      fs.exists(cwd + config.componentsPath + '_' + name + '.scss', function(exists) {
+        if(exists) {
+          throw "File _" + name + ".scss exists!";
         } else {
-          return true;
+          fs.writeFile(cwd + config.componentsPath + '_' + name + '.scss', '', function (err) {
+            if (err) throw err;
+            grunt.log.ok('Generated scss/components/' + name + '.scss ');
+
+            fs.appendFile(cwd + config.componentsPath + '_components.scss', '\n@import \'' + name + '\';', function(err) {
+              if (err) throw err;
+              grunt.log.ok('Appended "@import \'' + name + '\';" to _components.scss');
+              done();
+            });
+          });
         }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
-
-      // Handle options.
-      src += options.punctuation;
-
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
-
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
-    });
+      });
+    };
+    
+    switch(type) {
+      case 'component':
+        createComponent(name, done);
+        break;
+    }
   });
 
 };
