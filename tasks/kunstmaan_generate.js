@@ -12,7 +12,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('kuma-generate', 'Easily create new SCSS modules within a Kunstmaan project.', function(type, name) {
     var fs = require('fs'),
-        colors = require('colors'),
         done = this.async(),
         cwd = process.cwd(),
         config;
