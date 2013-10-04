@@ -10,40 +10,77 @@
 
 module.exports = function(grunt) {
 
-  grunt.registerTask('kuma-generate', 'Easily create new SCSS modules within a Kunstmaan project.', function(type, name) {
+  grunt.registerTask('kg', 'Easily create new SCSS modules within a Kunstmaan project.', function(type, name) {
     var fs = require('fs'),
         done = this.async(),
         cwd = process.cwd(),
-        config;
+        paths, files,
+        kgenerate;
 
-    config = {
-      'basePath': '/scss/',
-      'generalPath': '/scss',
-      'componentsPath': '/scss/components/'
-    }
-    var createComponent = function(name, done) {
-      fs.exists(cwd + config.componentsPath + '_' + name + '.scss', function(exists) {
-        if(exists) {
-          throw "File _" + name + ".scss exists!";
+    paths = {
+      'mixin'       : '/scss/helpers/mixins/',
+      'config'      : '/scss/config/',
+      'general'     : '/scss/general/',
+      'component'   : '/scss/components/',
+      'placeholder' : '/scss/helpers/placeholders/'
+    };
+
+    files = {
+      'mixin'       : '/scss/helpers/mixins/_mixins.scss',
+      'config'      : '/scss/config/_config.scss',
+      'general'     : '/scss/general/_general.scss',
+      'component'   : '/scss/components/_components.scss',
+      'placeholder' : '/scss/helpers/placeholders/_placeholders.scss',
+    };
+
+    kgenerate = function(name, type, done) {
+      var im = '\n@import \'' + name + '\';\n',
+          file = '_' + name + '.scss',
+          path = paths[type] + file,
+          fullPath = cwd + paths[type] + file,
+          appendPath = cwd + files[type];
+
+      fs.exists(fullPath, function(exists) {
+        if (exists) {
+          throw "File " + file + " exists!";
         } else {
-          fs.writeFile(cwd + config.componentsPath + '_' + name + '.scss', '', function (err) {
-            if (err) throw err;
-            grunt.log.ok('Generated scss/components/' + name + '.scss ');
+          var data = '';
 
-            fs.appendFile(cwd + config.componentsPath + '_components.scss', '\n@import \'' + name + '\';', function(err) {
-              if (err) throw err;
-              grunt.log.ok('Appended "@import \'' + name + '\';" to _components.scss');
+          if(type === 'mixin') {
+            data = '@mixin ' + name + ' {}';
+          }
+          if(type === 'placeholder') {
+            data = '%' + name + ' {}';
+          }
+
+          fs.writeFile(fullPath, data, function(err) {
+            if (err) {
+              throw err;
+            }
+            grunt.log.ok('Generated ' + path);
+
+            fs.appendFile(appendPath, im, function(err) {
+              if (err) {
+                throw err;
+              }
+              grunt.log.ok('Appended "@import ' + name + ';" to ' + files[type]);
               done();
             });
           });
         }
       });
     };
-    
-    switch(type) {
-      case 'component':
-        createComponent(name, done);
-        break;
+
+    if ((typeof name === 'undefined' && typeof type === 'undefined') || type === 'help') {
+      console.log('\n------------------------ ');
+      console.log('Kunstmaan Generate Task:   ');
+      console.log('------------------------   ');
+      grunt.log.ok('kg:TYPE:NAME\n');
+      console.log('\nPossible types are: component, mixin, config, placeholder, general');
+    } else if (typeof name === 'undefined' && type in paths) {
+      // prompt
+    } else if (type in paths) {
+      kgenerate(name, type, done);
     }
   });
 
