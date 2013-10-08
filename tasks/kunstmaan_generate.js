@@ -10,35 +10,34 @@
 
 module.exports = function(grunt) {
 
-  grunt.registerTask('kg', 'Easily create new SCSS modules within a Kunstmaan project.', function(type, name) {
-    var fs = require('fs'),
-        done = this.async(),
-        cwd = process.cwd(),
-        paths, files,
-        kgenerate;
+  var fs = require('fs'),
+    cwd = process.cwd(),
+    prompt = require('prompt'),
+    paths, imports,
+    kunstmaan;
 
-    paths = {
+  kunstmaan = {
+    paths: {
       'mixin'       : '/scss/helpers/mixins/',
       'config'      : '/scss/config/',
       'general'     : '/scss/general/',
       'component'   : '/scss/components/',
       'placeholder' : '/scss/helpers/placeholders/'
-    };
+    },
 
-    files = {
-      'mixin'       : '/scss/helpers/mixins/_mixins.scss',
-      'config'      : '/scss/config/_config.scss',
-      'general'     : '/scss/general/_general.scss',
-      'component'   : '/scss/components/_components.scss',
-      'placeholder' : '/scss/helpers/placeholders/_placeholders.scss',
-    };
-
-    kgenerate = function(name, type, done) {
+    imports: {
+      'mixin'       : '_mixins.scss',
+      'config'      : '_config.scss',
+      'general'     : '_general.scss',
+      'component'   : '_components.scss',
+      'placeholder' : '_placeholders.scss',
+    },
+    generate: function(name, type, done) {
       var im = '\n@import \'' + name + '\';\n',
           file = '_' + name + '.scss',
-          path = paths[type] + file,
-          fullPath = cwd + paths[type] + file,
-          appendPath = cwd + files[type];
+          path = kunstmaan.paths[type] + file,
+          fullPath = cwd + kunstmaan.paths[type] + file,
+          appendPath = cwd + kunstmaan.paths[type] + kunstmaan.imports[type];
 
       fs.exists(fullPath, function(exists) {
         if (exists) {
@@ -63,24 +62,32 @@ module.exports = function(grunt) {
               if (err) {
                 throw err;
               }
-              grunt.log.ok('Appended "@import ' + name + ';" to ' + files[type]);
+              grunt.log.ok('Appended "@import ' + name + ';" to ' + kunstmaan.imports[type]);
               done();
             });
           });
         }
       });
-    };
+    }
+  };
+
+  grunt.registerTask('kg', 'Easily create new SCSS modules within a Kunstmaan project.', function(type, name) {
+    var done = this.async();
 
     if ((typeof name === 'undefined' && typeof type === 'undefined') || type === 'help') {
       console.log('\n------------------------ ');
       console.log('Kunstmaan Generate Task:   ');
       console.log('------------------------   ');
       grunt.log.ok('kg:TYPE:NAME\n');
-      console.log('\nPossible types are: component, mixin, config, placeholder, general');
-    } else if (typeof name === 'undefined' && type in paths) {
-      // prompt
-    } else if (type in paths) {
-      kgenerate(name, type, done);
+      console.log('\nPossible types are: component, mixin, config, placeholder, general\n');
+    } else if (typeof name === 'undefined' && type in kunstmaan.paths) {
+      prompt.start();
+      prompt.message = 'Please provide a name for your ' + type + ' file';
+      prompt.get(['name'], function(err, result){
+        kunstmaan.generate(result.name, type, done);
+      });
+    } else if (type in kunstmaan.paths) {
+      kunstmaan.generate(name, type, done);
     }
   });
 
