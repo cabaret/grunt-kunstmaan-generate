@@ -45,7 +45,8 @@ These commands will generate a file with a given name in the corresponding folde
 
 ## Todo
 
-Write tests.
+- Write tests.
+- Make this configurable so it's usable outside of Kunstmaan projects.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
