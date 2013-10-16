@@ -48,4 +48,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
-16/10/2013 - *0.1.0*
+**0.1.0** - 16/10/2013
