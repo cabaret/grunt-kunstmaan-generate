@@ -43,6 +43,10 @@ grunt kg:placeholder:NAME
 
 These commands will generate a file with a given name in the corresponding folder. They will also `@import` the file in the corresponding imports file (e.g _components.scss). In some cases, they will also generate some boilerplate code.
 
+## Todo
+
+Write tests.
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
