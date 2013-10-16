@@ -17,70 +17,31 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-kunstmaan-generate');
 ```
 
-## The "kunstmaan_generate" task
+As this is currently built to be used with [Kunstmaan Bundles](http://bundles.kunstmaan.be/) projects, it expects the following directory structure:
 
-### Overview
-In your project's Gruntfile, add a section named `kunstmaan_generate` to the data object passed into `grunt.initConfig()`.
-
-```js
-grunt.initConfig({
-  kunstmaan_generate: {
-    options: {
-      // Task-specific options go here.
-    },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
-  },
-})
+```
+- scss /
+  - config /
+  - components /
+  - general /
+  - helpers /
+    - mixins /
+    - placeholders /
 ```
 
-### Options
+## Commands
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
+After loading the `grunt-kunstmaan-generate` task in your Gruntfile, you can issue the following commands from the command-line:
 
-A string value that is used to do something with whatever.
-
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
-
-A string value that is used to do something else with whatever else.
-
-### Usage Examples
-
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
-```js
-grunt.initConfig({
-  kunstmaan_generate: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-})
+```shell
+grunt kg:component:NAME
+grunt kg:config:NAME
+grunt kg:general:NAME
+grunt kg:mixin:NAME
+grunt kg:placeholder:NAME
 ```
 
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  kunstmaan_generate: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-})
-```
+These commands will generate a file with a given name in the corresponding folder. They will also `@import` the file in the corresponding imports file (e.g _components.scss). In some cases, they will also generate some boilerplate code.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
