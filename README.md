@@ -47,4 +47,5 @@ These commands will generate a file with a given name in the corresponding folde
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+
+16/10/2013 - *0.1.0*
