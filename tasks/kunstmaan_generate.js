@@ -33,7 +33,7 @@ module.exports = function(grunt) {
       'placeholder' : '_placeholders.scss',
     },
     generate: function(name, type, done) {
-      var im = '\n@import \'' + name + '\';\n',
+      var im = '@import \'' + name + '\';\n',
           file = '_' + name + '.scss',
           path = kunstmaan.paths[type] + file,
           fullPath = cwd + kunstmaan.paths[type] + file,
