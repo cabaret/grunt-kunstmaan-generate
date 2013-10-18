@@ -14,15 +14,16 @@ module.exports = function(grunt) {
     cwd = process.cwd(),
     prompt = require('prompt'),
     paths, imports,
-    kunstmaan;
+    kunstmaan,
+    pathToFiles = '/src/Bolero/PlatformBundle/Resources/public/';
 
   kunstmaan = {
     paths: {
-      'mixin'       : '/scss/helpers/mixins/',
-      'config'      : '/scss/config/',
-      'general'     : '/scss/general/',
-      'component'   : '/scss/components/',
-      'placeholder' : '/scss/helpers/placeholders/'
+      'mixin'       : pathToFiles + 'scss/helpers/mixins/',
+      'config'      : pathToFiles + '/scss/config/',
+      'general'     : pathToFiles + '/scss/general/',
+      'component'   : pathToFiles + '/scss/components/',
+      'placeholder' : pathToFiles + '/scss/helpers/placeholders/'
     },
 
     imports: {
@@ -33,23 +34,25 @@ module.exports = function(grunt) {
       'placeholder' : '_placeholders.scss',
     },
     generate: function(name, type, done) {
-      var im = '@import \'' + name + '\';\n',
+      var im = '\n@import \'' + name + '\';\n',
           file = '_' + name + '.scss',
           path = kunstmaan.paths[type] + file,
           fullPath = cwd + kunstmaan.paths[type] + file,
-          appendPath = cwd + kunstmaan.paths[type] + kunstmaan.imports[type];
+          appendPath = cwd + kunstmaan.paths[type] + kunstmaan.imports[type],
+          comment = '/* ==========================================================================\n' + name + '\n\nStyle guide: https://github.com/necolas/idiomatic-css\n========================================================================== */\n';
+
 
       fs.exists(fullPath, function(exists) {
         if (exists) {
           throw "File " + file + " exists!";
         } else {
-          var data = '';
+          var data = comment;
 
           if(type === 'mixin') {
-            data = '@mixin ' + name + ' {}';
+            data += '\n@mixin ' + name + ' {}';
           }
           if(type === 'placeholder') {
-            data = '%' + name + ' {}';
+            data += '\n%' + name + ' {}';
           }
 
           fs.writeFile(fullPath, data, function(err) {
