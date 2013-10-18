@@ -20,10 +20,10 @@ module.exports = function(grunt) {
   kunstmaan = {
     paths: {
       'mixin'       : pathToFiles + 'scss/helpers/mixins/',
-      'config'      : pathToFiles + '/scss/config/',
-      'general'     : pathToFiles + '/scss/general/',
-      'component'   : pathToFiles + '/scss/components/',
-      'placeholder' : pathToFiles + '/scss/helpers/placeholders/'
+      'config'      : pathToFiles + 'scss/config/',
+      'general'     : pathToFiles + 'scss/general/',
+      'component'   : pathToFiles + 'scss/components/',
+      'placeholder' : pathToFiles + 'giscss/helpers/placeholders/'
     },
 
     imports: {
