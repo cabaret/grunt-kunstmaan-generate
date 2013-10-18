@@ -12,7 +12,6 @@ module.exports = function(grunt) {
   var fs = require('fs'),
     cwd = process.cwd(),
     prompt = require('prompt'),
-    pathToFiles = '/' + grunt.config.data.kg.path,
     paths, imports,
     kunstmaan;
 
