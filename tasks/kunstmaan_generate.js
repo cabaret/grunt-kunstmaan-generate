@@ -9,21 +9,19 @@
 'use strict';
 
 module.exports = function(grunt) {
-
   var fs = require('fs'),
     cwd = process.cwd(),
     prompt = require('prompt'),
     paths, imports,
-    kunstmaan,
-    pathToFiles = '/src/Bolero/PlatformBundle/Resources/public/';
+    kunstmaan;
 
   kunstmaan = {
     paths: {
-      'mixin'       : pathToFiles + 'scss/helpers/mixins/',
-      'config'      : pathToFiles + 'scss/config/',
-      'general'     : pathToFiles + 'scss/general/',
-      'component'   : pathToFiles + 'scss/components/',
-      'placeholder' : pathToFiles + 'scss/helpers/placeholders/'
+      'mixin'       : 'scss/helpers/mixins/',
+      'config'      : 'scss/config/',
+      'general'     : 'scss/general/',
+      'component'   : 'scss/components/',
+      'placeholder' : 'scss/helpers/placeholders/'
     },
 
     imports: {
@@ -33,12 +31,12 @@ module.exports = function(grunt) {
       'component'   : '_components.scss',
       'placeholder' : '_placeholders.scss',
     },
-    generate: function(name, type, done) {
+    generate: function(name, type, done, pathToFiles) {
       var im = '\n@import \'' + name + '\';\n',
           file = '_' + name + '.scss',
-          path = kunstmaan.paths[type] + file,
-          fullPath = cwd + kunstmaan.paths[type] + file,
-          appendPath = cwd + kunstmaan.paths[type] + kunstmaan.imports[type],
+          path = pathToFiles + kunstmaan.paths[type] + file,
+          fullPath = cwd + pathToFiles + kunstmaan.paths[type] + file,
+          appendPath = cwd + pathToFiles + kunstmaan.paths[type] + kunstmaan.imports[type],
           comment = '/* ==========================================================================\n' + name + '\n\nStyle guide: https://github.com/necolas/idiomatic-css\n========================================================================== */\n';
 
 
@@ -87,10 +85,10 @@ module.exports = function(grunt) {
       prompt.start();
       prompt.message = 'Please provide a name for your ' + type + ' file';
       prompt.get(['name'], function(err, result){
-        kunstmaan.generate(result.name, type, done);
+        kunstmaan.generate(result.name, type, done, grunt.config.data.kg.path);
       });
     } else if (type in kunstmaan.paths) {
-      kunstmaan.generate(name, type, done);
+      kunstmaan.generate(name, type, done, grunt.config.data.kg.path);
     }
   });
 
