@@ -23,7 +23,7 @@ module.exports = function(grunt) {
       'config'      : pathToFiles + 'scss/config/',
       'general'     : pathToFiles + 'scss/general/',
       'component'   : pathToFiles + 'scss/components/',
-      'placeholder' : pathToFiles + 'git statscss/helpers/placeholders/'
+      'placeholder' : pathToFiles + 'scss/helpers/placeholders/'
     },
 
     imports: {
