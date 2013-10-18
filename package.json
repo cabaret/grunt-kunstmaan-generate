@@ -1,7 +1,7 @@
 {
   "name": "grunt-kunstmaan-generate",
   "description": "Easily create new SCSS modules within a Kunstmaan project.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/cabaret/grunt-kunstmaan-generate",
   "author": {
     "name": "Joris Ooms",
