@@ -37,9 +37,15 @@
     "grunt": "~0.4.1"
   },
   "peerDependencies": {
-    "grunt": "~0.4.1"
+    "grunt": ">=0.4.0"
   },
   "keywords": [
-    "gruntplugin", "kunstmaan", "generate", "scss", "import", "grunt", "node"
+    "gruntplugin",
+    "kunstmaan",
+    "generate",
+    "scss",
+    "import",
+    "grunt",
+    "node"
   ]
 }
